@@ -1,6 +1,6 @@
 const { allDataCharacter } = require("../Service/CharacterSv");
 const axios = require('axios');
-const { Episode } = require('../db.js');
+const { Character, Episode } = require('../db.js');
 
 const controller = {}
 
@@ -16,37 +16,83 @@ controller.getCharacter = async (req, res)=>{
 controller.getAllEpisodes= async (req, res)=>{
     try {
         const arr = [];
-        for (let i = 1; i < 43; i++) {
-          arr.push(i);
+        for (let i = 1; i < 4; i++) {
+        arr.push(i);
         }
         const promises = arr.map((i) =>
-          axios.get(`https://rickandmortyapi.com/api/episode?page=${i}`)
+        axios.get(`https://rickandmortyapi.com/api/episode?page=${i}`)
         );
         const results = await Promise.all(promises);
-
-        let json= await results.data
-        let nombreEpisodios= json.map(ele=>ele.name)
-        const episodeId= nombreEpisodios.map(ele=> ele.id)
-
-
-
-        const subirAlaDB= nombreEpisodios.map(ele=>{
+        
+        const episodes = results.map((ele) => {
+            return ele.data.results.map((i) => {
+                return {
+                    id: i.id,
+                    name: i.name,
+                };
+            });
+        }).flat();
+        
+        
+       
+        const subirAlaDB= episodes.map(ele=>{
             Episode.findOrCreate({
-                where:{name: ele}
+                where:{id: ele.id,
+                        name: ele.name} 
             })
         })
-
-        const subirIdDb= episodeId.map(ele=>{
-            Episode.findOrCreate({
-                where:{id: ele}
-            })
+        
+        const todosLosEpisodios= await Episode.findAll({
+            attributes: ['name']
         })
-
-        const todosLosEpisodios= await Episode.findAll()
 
         res.status(200).send(todosLosEpisodios)
     } catch (error) {
       console.log(error)  
+    }
+}
+
+controller.getCharacterById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const character = await allDataCharacter();
+        const characterId = character.find((e)=>e.id == id);
+    
+        characterId 
+        ? res.status(200).send(characterId) 
+        : res.status(404).send('Error: Not Found'); 
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+controller.postCharacter = async (req, res)=>{
+    try {
+        let {
+            name,
+            species,
+            origin,
+            image,
+            created,
+            episode,
+          } = req.body;
+        const newCharacter = await Character.create({
+            name,
+            species,
+            origin,
+            image,
+            created,
+        })
+        const newEpisode = await Episode.findAll({
+           where:{ name: episode }
+        })
+
+        await newCharacter.addEpisode(newEpisode);
+        res.status(200).json({...req.body});
+
+    } catch (error) {
+        res.status(406).send('Efe men');
     }
 }
 

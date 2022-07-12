@@ -25,7 +25,7 @@ const infoApi = async () => {
             };
           });
         });
-        return characters;
+        return characters.flat();
     } catch (error) {
         return console.log(error);
     }
@@ -51,6 +51,7 @@ const infoApi = async () => {
   };
 
 
+  //Puede ser Promesa
   const allDataCharacter = async () => {
     try {
       const allinfoApi= await infoApi();

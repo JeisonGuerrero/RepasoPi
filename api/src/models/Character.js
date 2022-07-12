@@ -27,7 +27,8 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     created: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.DATEONLY,
+      defaultValue: new Date(),
       allowNull: false,
     },
   });

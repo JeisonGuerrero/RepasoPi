@@ -1,6 +1,7 @@
-const { Router } = require("express");
-const controller = require('../Controller/index.js')
-// const { Character, Episode } = require('../db.js')
+const { Router, } = require("express");
+const controller = require('../Controller/index.js');
+
+
 
 
 const router = Router();
@@ -8,27 +9,8 @@ const router = Router();
 // Configurar los routers
 router.get('/', controller.getCharacter);
 
-// router.post('/', async (req, res)=>{
-//     try {
-//         let {
-//             name,
-//             species,
-//             origin,
-//             image,
-//             created,
-//             episode,
-//           } = req.body;
-//         const newCharacter = await Character.create({
-//             name,
-//             species,
-//             origin,
-//             image,
-//             created,
-//         })
+router.get('/:id', controller.getCharacterById);
 
-//     } catch (error) {
-//         console.log(error);
-//     }
-// });
+router.post('/', controller.postCharacter);
 
 module.exports = router;
