@@ -1,0 +1,49 @@
+.containerLanding{
+    height: 100vh;
+    background-image: url(https://media.vandalsports.com/i/640x360/5-2022/202251816546_1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.ContenedorBtn{
+    width: 70%;
+    height: 100%;
+}
+
+.ContenidoBtn{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    height: 100%;
+}
+
+.Landing{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 65%;
+    height: 60%;
+    flex-direction: column;
+}
+
+.msg{
+    color: #4b3d57;
+    font-size: 3em;
+    text-align: center;
+}
+
+.BntBienvenido{
+    background-color: #4b3d57;
+    border-radius: 10px;
+    color: #eb649f;
+    font-weight: 900;
+    font-size: 1.5em;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.BntBienvenido:hover{
+    background-color: #675477;
+    color: #d1598d;
+}
